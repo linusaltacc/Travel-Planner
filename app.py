@@ -1,4 +1,3 @@
-# app.py
 from VertexAI import get_search_results, get_itinerary
 from flask import Flask, render_template, request, render_template_string, redirect, url_for
 from flask import session, g
@@ -6,6 +5,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import bcrypt
 import os
+
 app = Flask(__name__)
 app.secret_key=os.urandom(24)
 
@@ -15,16 +15,34 @@ db = firestore.client()
 
 @app.route('/')
 def landing_page():
+    """
+    Renders the landing page template.
+
+    Returns:
+        The rendered landing page template.
+    """
     return render_template('landing_page.html')
 
 @app.route('/search', methods=['POST'])
 def search_destinations():
+    """
+    Searches for destinations based on a keyword.
+
+    Returns:
+        The rendered landing page template with the search results.
+    """
     keyword = request.form['search_keyword']
     search_results = get_search_results(keyword)
     return render_template('landing_page.html', search_results=search_results)
 
 @app.route('/itinerary', methods=['POST'])
 def itinerary():
+    """
+    Generates an itinerary based on the selected destination and number of days.
+
+    Returns:
+        The rendered itinerary template with the generated itinerary.
+    """
     keyword = request.form['search_results']
     days = request.form['days']
     itinerary = get_itinerary(keyword + "I want to travel " + str(days) + " days.")
@@ -32,14 +50,27 @@ def itinerary():
 
 @app.route('/dashboard', methods=['GET'])
 def dashboard():
+    """
+    Renders the dashboard template.
+
+    Returns:
+        The rendered dashboard template with the user's itineraries.
+    """
     if g.user:
         data = db.collection('users').document(g.user)
         if data.get().exists:
             data = data.get().to_dict()
             return render_template('dashboard.html', itineries=data['itineries'])
     return redirect("/login")
+
 @app.route('/save_itinerary', methods=['POST'])
 def save_itinerary():
+    """
+    Saves the generated itinerary to the user's account.
+
+    Returns:
+        Redirects to the landing page if successful, otherwise redirects to the login page.
+    """
     if g.user:
         itinerary = request.form['itinerary']
         print(itinerary)
@@ -53,6 +84,12 @@ def save_itinerary():
         
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    """
+    Renders the signup template and creates a new user account.
+
+    Returns:
+        Redirects to the login page if successful, otherwise renders the signup template with an error message.
+    """
     if request.method == 'POST':
         result = request.form
         username = result['username']
@@ -67,8 +104,15 @@ def signup():
         else:
             return render_template_string("user already exists. please sign in")
     return render_template('signup.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """
+    Renders the login template and logs in the user.
+
+    Returns:
+        Redirects to the landing page if successful, otherwise renders the login template with an error message.
+    """
     if request.method == 'POST':
         result = request.form
         username = result['username']
@@ -84,14 +128,24 @@ def login():
         else:   
             return "User does not exist"
     return render_template('login.html')
+
 @app.route("/logout")
 def logout():
+    """
+    Logs out the user.
+
+    Returns:
+        Redirects to the login page.
+    """
     session.pop('user', None)
     print("Logged out")
     return redirect('/login')
 
 @app.before_request
 def before_request():
+    """
+    Sets the global user variable to the current user.
+    """
     g.user  = None
     if 'user' in session:
         g.user = session['user']
