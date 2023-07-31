@@ -1,0 +1,43 @@
+<!-- templates/itinerary.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Itinerary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .itinerary-day {
+            margin-top: 20px;
+        }
+        .itinerary-day-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .itinerary-activity {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Itinerary</h1>
+    <div>
+    <form action="/save_itinerary" method="post">
+        <input type="hidden" name="itinerary" id="itinerary" value={{it|tojson}}>
+        {% for line in itinerary.split('\n') %}
+            {% if line.startswith('Day ') %}
+                <div class="itinerary-day">
+                    <div class="itinerary-day-header">{{ line }}</div>
+                </div>
+            {% elif line.startswith('* ') %}
+                <div class="itinerary-activity">{{ line }}</div>
+            {% else %}
+                {{ line }}<br>
+            {% endif %}
+        {% endfor %}
+    </div>
+        <button type="submit">Save Itinerary</button>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!-- templates/itinerary.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Itinerary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .itinerary-day {
+            margin-top: 20px;
+        }
+        .itinerary-day-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .itinerary-activity {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Itineries</h1>
+    <div>
+        {% for itinerary in itineries %}
+            <li>
+            {% for line in itinerary.split('\n') %}
+                {% if line.startswith('Day ') %}
+                    <div class="itinerary-day">
+                        <div class="itinerary-day-header">{{ line }}</div>
+                    </div>
+                {% elif line.startswith('* ') %}
+                    <div class="itinerary-activity">{{ line }}</div>
+                {% else %}
+                    {{ line }}<br>
+                {% endif %}
+            {% endfor %}
+        </li>
+        {% endfor %}
+    </div>
+</body>
+</html>
