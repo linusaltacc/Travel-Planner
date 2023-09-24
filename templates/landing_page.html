@@ -1,9 +1,138 @@
-<!-- templates/landing_page.html -->
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>Travel Planner Pro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20210929/pngtree-glassmorphism-wave-effect-abstract-background-image_908575.png');
+            background-size: cover;
+            background-blur: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            background-clip: border-box;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #333;
+            background: linear-gradient(135deg, #007BFF, #0056b3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        form {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            padding: 15px;
+            width: 300px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            font-size: 1rem;
+            color: #fff;
+            outline: none;
+            transition: background 0.3s ease-in-out;
+        }
+
+        input[type="text"]::placeholder {
+            color: #ccc;
+        }
+
+        input[type="text"]:focus {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        button[type="submit"] {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            background-color: #007BFF;
+            color: #fff;
+            font-size: 1rem;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .search-results {
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .search-results h2 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .search-results h3 {
+            font-size: 1.2rem;
+            color: #007BFF;
+        }
+
+        .search-results p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .search-results button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: #fff;
+            font-size: 1rem;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .search-results button:hover {
+            background-color: #0056b3;
+        }
+        input[type="text"] {
+            padding: 15px;
+            width: 300px;
+            border: none;
+            border-radius: 25px;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            font-size: 1rem;
+            color: #fff;
+            outline: none;
+            transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Add box-shadow transition */
+        }
+
+        input[type="text"]::placeholder {
+            color: #ccc;
+        }
+
+        input[type="text"]:focus {
+            background-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Add a box shadow on focus */
+        }
+
+    </style>
 </head>
 <body>
     <h1>Welcome to Travel Planner Pro</h1>
@@ -12,23 +141,23 @@
         <button type="submit">Search</button>
     </form>
     {% if search_results %}
-        <h2>Search Results</h2>
-        <ul>
-            <li>    
-                <h3>{{ search_results.name }}</h3>
-                <p>{{ search_results.description }}</p>
-                <p>Attractions: {{ search_results.attractions }}</p>
-                <p>Weather: {{ search_results.weather }}</p>
-                <p>Expenses: {{ search_results.expenses }}</p>
-                <form action="/itinerary" method="post">
-                    <input type="text" name="search_results" value={{search_results}} hidden>
-                    <input type="number" name="days" placeholder="Enter days" required>
-
-                    <button>view iternary</button>
-                </form>
-                
-            </li>
-        </ul>
+        <div class="search-results">
+            <h2>Search Results</h2>
+            <ul>
+                <li>
+                    <h3>{{ search_results.name }}</h3>
+                    <p>{{ search_results.description }}</p>
+                    <p>Attractions: {{ search_results.attractions }}</p>
+                    <p>Weather: {{ search_results.weather }}</p>
+                    <p>Expenses: {{ search_results.expenses }}</p>
+                    <form action="/itinerary" method="post">
+                        <input type="text" name="search_results" value={{search_results.name}} hidden>
+                        <input type="number" name="days" placeholder="Enter days" required>
+                        <button>View Itinerary</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
     {% endif %}
 </body>
 </html>

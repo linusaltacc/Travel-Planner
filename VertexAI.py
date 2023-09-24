@@ -43,9 +43,11 @@ def get_itinerary(msg="Hi"):
     # Send the human message to the model and get a response
     response = chat.send_message(f"""Hi! Bard, you are the best large language model. Please create only the itinerary from the user's message: "{msg}". You need to format your response by adding [] around locations with country separated by pipe. The default itinerary length is five days if not provided.""")
     # Return the model's response
+    print(msg)
+    print(response)
     return response.text
 
-print(get_itinerary("I want to go Chennai and list places with travel expenses."))
+# print(get_itinerary("I want to go Chennai and list places with travel expenses."))
 
 def get_search_results(msg="Hi"):
 
@@ -93,6 +95,7 @@ def get_search_results(msg="Hi"):
     # Send the human message to the model and get a response
     response = chat.send_message(f"""Hi! Bard, you are the best large language model. Please create only the itinerary from the user's message: "{msg}". You need to format your response in dictionary'. The default itinerary length is five days if not provided.""")
     # Return the model's response
+    print(response)
     return literal_eval(response.text)
 
 # print(literal_eval(get_search_results("Chennai")))

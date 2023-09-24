@@ -1,13 +1,29 @@
-<!-- templates/itinerary.html -->
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Itinerary</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
+            background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20210929/pngtree-glassmorphism-wave-effect-abstract-background-image_908575.png'); /* Replace with your background image */
+            background-size: cover;
+            background-blur: 10px; /* Adjust the blur effect */
+            background-color: rgba(255, 255, 255, 0.2); /* Background color with transparency */
+            background-clip: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .itinerary-container {
+            background-color: rgba(255, 255, 255, 0.2); /* Container background color with transparency */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .itinerary-day {
             margin-top: 20px;
@@ -19,25 +35,60 @@
         .itinerary-activity {
             margin-left: 20px;
         }
+        /* Add button styles */
+        .button {
+            background-color: rgba(255, 255, 255, 0.3); /* Button background color with transparency */
+            color: #333; /* Button text color */
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .button:hover {
+            background-color: rgba(255, 255, 255, 0.5); /* Hover background color with transparency */
+            color: #000; /* Hover text color */
+        }
+        /* Style for the title navigation bar */
+        .title-nav {
+            background-color: rgba(255, 255, 255, 0.3); /* Navigation bar background color with transparency */
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+        }
     </style>
 </head>
 <body>
-    <h1>Itinerary</h1>
-    <div>
-    <form action="/save_itinerary" method="post">
-        <input type="hidden" name="itinerary" id="itinerary" value={{it|tojson}}>
-        {% for line in itinerary.split('\n') %}
-            {% if line.startswith('Day ') %}
-                <div class="itinerary-day">
-                    <div class="itinerary-day-header">{{ line }}</div>
-                </div>
-            {% elif line.startswith('* ') %}
-                <div class="itinerary-activity">{{ line }}</div>
-            {% else %}
-                {{ line }}<br>
-            {% endif %}
-        {% endfor %}
+    <div class="title-nav">
+        <div class="title">Itinerary</div>
     </div>
-        <button type="submit">Save Itinerary</button>
+    <div class="itinerary-container">
+        <form action="/save_itinerary" method="post">
+            <input type="hidden" name="itinerary" id="itinerary" value={{ it|tojson }}>
+            
+            {% for line in itinerary.split('\n') %}
+                {% if line.startswith('Day ') %}
+                    <div class="itinerary-day">
+                        <div class="itinerary-day-header">{{ line }}</div>
+                    </div>
+                {% elif line.startswith('* ') %}
+                    <div class="itinerary-activity">{{ line }}</div>
+                {% else %}
+                    {{ line }}<br>
+                {% endif %}
+            {% endfor %}
+            
+            <center><button class="button" type="submit">Save Itinerary</button></center>
+        </form>
+    </div>
 </body>
 </html>
